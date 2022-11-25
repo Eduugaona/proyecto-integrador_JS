@@ -11,7 +11,7 @@
 </head>
 <body>
     
-    <div class="section-container header-container" id="header-container">
+    <div class="section-container header-container">
         <header>
             <div class="logo-container">
                 <img src="imagenes/logo_principal.png" alt="" class="logo">
@@ -26,33 +26,35 @@
                     <li><a href="#">Inicio</a></li>
                     <li><a href="#">Sobre nosotros</a></li>
                     <li><a href="#">Contactanos</a></li>
+                    <li><a href="#"><i class="fa-solid fa-cart-shopping" id="cart-btn">
+                        <div class="contador active-contador"></div>
+                    </i></a></li>
                     <li><a href="login.html"><i class="fa-regular fa-user"></i></a></li>
-                    <li><a href="#"><i class="fa-solid fa-cart-shopping" id="cart-btn"></i></a></li>
                 </ul>
             </nav>
         </header>
+
+        <div class="cart-menu toggle_cart">
+            <div class="close-cart_container">
+                <p>Mi Carrito</p>
+                <button class="close-cart">X</button>
+            </div> 
+            <div id="cart-products">
+                    
+            </div>
+            <div class="cart-total">
+                <p>Total:</p>
+                <p class="total">$0</p>
+            </div>
+            <div class="cart-buttons">
+                <button class="btn-empty-cart">VACIAR CARRITO</button>
+                <button class="btn-finalize-purchase">FINALIZAR COMPRA</button>
+            </div>
+               
+        </div>
     </div>
     
-    <div class="cart-menu toggle_cart">
-        <div class="close-cart_container">
-            <p>Mi Carrito</p>
-            <button class="close-cart">X</button>
-        </div> 
-        <div id="cart-products">
-                
-        </div>
-        <div class="cart-total">
-            <p>Total:</p>
-            <p class="total">$0</p>
-        </div>
-        <div class="cart-buttons">
-            <button>AGREGAR</button>
-            <button>FINALIZAR COMPRA</button>
-        </div>
-           
-    </div>
-
-
+  
 
 
     <!--HERO-->
@@ -65,12 +67,12 @@
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
             </div>
             <div class="carousel-inner">
-           <!-- <div class="carousel-item active">
+            <div class="carousel-item">
                 <img src="imagenes/slider_1.jpg" class="d-block w-100" alt="..."> 
             </div>
-            <div class="carousel-item active">
+            <div class="carousel-item">
                 <img src="imagenes/slider_4.jpg" class="d-block w-100" alt="...">
-            </div>-->
+            </div>
             <div class="carousel-item">
                 <img src="imagenes/slider_3.jpg" class="d-block w-100 " alt="...">
             </div>
@@ -99,7 +101,7 @@
                 <button class="category" data-category="otros" id="fifth-category">Otros</button>
             </div>
             <div class="card_containers">
-                <div id="divejemplo">
+                <div id="cards">
                 <!--<div class="card">
                     <div class="image_card">
                         <img src="imagenes/pexels-antoni-shkraba-production-8412404.jpg" alt="">
@@ -118,6 +120,21 @@
             </div>
         </div>    
     </section>
+
+    <div class="section-container">
+        <div class="newsletter-container">
+            <h3>¡Suscribite y obtené $600 de regalo!</h3>
+            <p>Además recibí novedades y promociones exclusivas en tu email.</p>
+            <form action="" class="newsletter-form">
+                <input type="email" placeholder="Ingresa tu mail">
+                <button type="submit">Suscribirme</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="confirmation toggle-confirmation">
+        <h2>El producto se agrego correctamente</h2>
+    </div>
 
     <section class="section-container">
         <footer>

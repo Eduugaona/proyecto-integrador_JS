@@ -1,5 +1,5 @@
 const products = document.querySelector(".card_containers")
-const divejemplo = document.getElementById("divejemplo")
+const cards = document.getElementById("cards")
 const categories = document.querySelector(".categories")
 const categoriesList = document.querySelectorAll(".category")
 const btnShowMore = document.querySelector(".show_more")
@@ -12,6 +12,11 @@ const closeCartButton = document.querySelector('.close-cart')
 const cartProducts = document.getElementById('cart-products')
 const productsCart = document.querySelector('.cart-menu')
 const total = document.querySelector('.total')
+const buyBtn = document.querySelector(".btn-finalize-purchase")
+const deleteBtn = document.querySelector(".btn-empty-cart")
+const cartTotal = document.querySelector(".cart-total")
+const confirmation = document.querySelector(".confirmation")
+const contador = document.querySelector(".contador")
 
 ///////////////////////// LOCAL STORAGE ///////////////////
 
@@ -158,7 +163,7 @@ const productsController = {
 
 /*RENDERIZA UNA FRACCION DEL CATALOGO DE PRODUCTOS*/
 const renderDividedProducts = (index = 0) => {
-   divejemplo.innerHTML += productsController.dividedProducts[index]
+   cards.innerHTML += productsController.dividedProducts[index]
    .map(renderProduct).join('')
 }
 
@@ -168,7 +173,7 @@ const renderFilteredProducts = (category) => {
    const productsList = productsData.filter((product)=>
    product.category === category);
 
-   divejemplo.innerHTML = productsList.map(renderProduct).join('')
+   cards.innerHTML = productsList.map(renderProduct).join('')
 }
 
 /*CHEQUEA SI ES QUE RECIBE UNA CATEGORIA, EN BASE A ESO RENDERIZA POR CATEGORIA O RENDERIZA EL TOTAL DE PRODUCTOS*/
@@ -207,11 +212,10 @@ const renderProduct = (productos) => {
 
 /*RECIBE EL EVENTO Y APLICA EL FILTRO DEL BOTON SELECCIONADO AL MISMO TIEMPO QUE SE FIJA SI HAY QUE RENDERIZAR POR CATEGORIA O RENDERIZAR TODOS LOS PRODUCTOS*/
 const applyFilter = (e) => {
-   console.log(e.target.dataset)
    if(!e.target.classList.contains('category')) return;
    changeFilterState(e)
    if(!e.target.dataset.category){
-      divejemplo.innerHTML = '';
+      cards.innerHTML = '';
       renderProducts()
    }else{
       renderProducts(0, e.target.dataset.category)
@@ -279,13 +283,11 @@ const toggleMenuResponsive = () => {
    if(navbarUl.classList.contains('navbar_list-responsive')){
       navbarUl.classList.remove('navbar_list-responsive')
    }
-   overlay.classList.toggle("show-overlay")
  }
 
  // BOTON PARA CERRAR EL CARRITO Y BORRA EL BLUR DE FONDO //
  const closeOnClick = () => {
    cartMenu.classList.toggle('toggle_cart')
-   overlay.classList.add("show-overlay");
  };
 
 
@@ -369,7 +371,7 @@ const toggleMenuResponsive = () => {
    // SI ES QUE YA EXISTE EL PRODUCTO EN EL CARRITO, HACER ESTO//
    if (isExistingCartProduct(product)) {
      addUnitProduct(product);
-     //  confirmationMsg()//
+     confirmationMsg()
    // SI NO EXISTE EN EL CARRITO HACER ESTO //    
    } else {
      createCartProduct(product);
@@ -378,15 +380,21 @@ const toggleMenuResponsive = () => {
    checkCartState();
  };
 
+ const confirmationMsg = () => {
+	confirmation.classList.remove("toggle-confirmation")
+	setTimeout(function(){
+		confirmation.classList.add("toggle-confirmation")
+	}, 1500)
+}
+
  const checkCartState = () => {
    saveToLocalStorage(cart);
    renderCart(cart);
-    //showSubTotal(cart)//
    showTotal(cart);
-    //showEnvio(cart)//
-   //contadorCarrito();//f
-   //disableBtn(btnBuy);//
-   // disableBtn(btnEmpty);
+   contadorCarrito();
+   disableBtn(deleteBtn)
+   disableBtn(buyBtn);
+   disableBtn(cartTotal)
  };
 
 
@@ -401,6 +409,16 @@ const toggleMenuResponsive = () => {
       return cartProduct.id === existingProduct.id
       ? {...cartProduct, quantity: cartProduct.quantity -1}
       : cartProduct })
+   }
+
+// DESHABILITAR LOS BOTONES QUE SEAN NECESARIOS //
+   const disableBtn = (btn) => {
+      if(!cart.length){
+         btn.classList.add("btn-hidden")
+      return}
+
+         btn.classList.remove("btn-hidden")
+      
    }
 
 
@@ -431,24 +449,27 @@ const toggleMenuResponsive = () => {
  }
 
  const resetCartItems = () => {
-   cart = [];
+   if(window.confirm("¿Desea eliminar todos los productos del carrito?")){
+      cart = []
+      return} 
+   
    checkCartState()
  }
 
- const changeBg = () => {
-   var headerContainer = document.getElementById('header-container')
-   var scrollValue = window.scrollY
-   if (scrollValue < 200) {
-      headerContainer.classList.remove('header-container_scroll')
-   }else{
-      headerContainer.classList.add('header-container_scroll')
+ // CONTADOR DEL CARRITO //
+ const contadorCarrito = () => {
+   if (!cart.length) {
+     contador.classList.add("active-contador");
+     return;
    }
- }
-
+   contador.classList.remove("active-contador");
+   contador.innerHTML = cart.length;
+ };
 
 
 const init = () => {
    renderProducts();
+   checkCartState();
    categories.addEventListener('click', applyFilter)
    btnShowMore.addEventListener('click',showMoreProducts)
    toggleMenu.addEventListener('click', toggleMenuResponsive)
@@ -458,6 +479,7 @@ const init = () => {
    document.addEventListener('DOMContentLoaded', showTotal)
    products.addEventListener('click', addProduct)
    productsCart.addEventListener('click', handleQuantity)
-   window.addEventListener('scroll', changeBg)
+   deleteBtn.addEventListener('click', resetCartItems)
+   contadorCarrito();
 }
 init()
